@@ -1,15 +1,43 @@
 import React, { Component } from 'react';
-// import Square from './Square';
+import Square from './Square';
+import { calculateWinner } from './../helpers/Helper';
 
 class Board extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            squares: Array(9).fill(null),
-            xIsNext: true,
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         squares: Array(9).fill(null),
+    //         xIsNext: true,
+    //     };
+    // }
+
+    /*history = [
+        // Before first move
+        {
+            squares: [
+                null, null, null,
+                null, null, null,
+                null, null, null,
+            ]
+        },
+        // After first move
+        {
+            squares: [
+                null, null, null,
+                null, 'X', null,
+                null, null, null,
+            ]
+        },
+        // After second move
+        {
+            squares: [
+                null, null, null,
+                null, 'X', null,
+                null, null, 'O',
+            ]
+        },
+    ];*/
 
     handleClick(i) {
         const squares = this.state.squares.slice();
@@ -27,29 +55,31 @@ class Board extends Component {
         // return <Square value={i}/>;
         return (
             <Square 
-                value={this.state.squares[i]}
-                onClick={() => this.handleClick(i)}
+                // value={this.state.squares[i]}
+                // onClick={() => this.handleClick(i)}
+                value={this.props.squares[i]}
+                onClick={() => this.props.onClick(i)}
             />
         );
             
     }
 
     render() {
-        const winner = calculateWinner(this.state.squares);
-        let status;
-        if (winner) {
-            status = 'Winner: ' + winner;
-        } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        }
+        // const winner = calculateWinner(this.state.squares);
+        // let status;
+        // if (winner) {
+        //     status = 'Winner: ' + winner;
+        // } else {
+        //     status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        // }
 
         // const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
         return (
             <div>
-                <div className="status">
+                {/* <div className="status">
                     {status}
-                </div>
+                </div> */}
                 <div className="board-row">
                     {this.renderSquare(0)}
                     {this.renderSquare(1)}
@@ -70,32 +100,33 @@ class Board extends Component {
     }
 }
 
-function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    )
-}
+// Alternatif when Square is declared not as class
+// function Square(props) {
+//     return (
+//         <button className="square" onClick={props.onClick}>
+//             {props.value}
+//         </button>
+//     )
+// }
 
-function calculateWinner(squares) {
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
-        }
-    }
-    return null;
-}
+// function calculateWinner(squares) {
+//     const lines = [
+//         [0, 1, 2],
+//         [3, 4, 5],
+//         [6, 7, 8],
+//         [0, 3, 6],
+//         [1, 4, 7],
+//         [2, 5, 8],
+//         [0, 4, 8],
+//         [2, 4, 6],
+//     ];
+//     for (let i = 0; i < lines.length; i++) {
+//         const [a, b, c] = lines[i];
+//         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+//             return squares[a];
+//         }
+//     }
+//     return null;
+// }
 
 export default Board;
