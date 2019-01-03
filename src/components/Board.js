@@ -39,17 +39,17 @@ class Board extends Component {
         },
     ];*/
 
-    handleClick(i) {
-        const squares = this.state.squares.slice();
-        if (calculateWinner(squares) || squares[i]) {
-            return;
-        }
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
-        this.setState({
-            squares: squares,
-            xIsNext: !this.state.xIsNext,
-        });
-    }
+    // handleClick(i) {
+    //     const squares = this.state.squares.slice();
+    //     if (calculateWinner(squares) || squares[i]) {
+    //         return;
+    //     }
+    //     squares[i] = this.state.xIsNext ? 'X' : 'O';
+    //     this.setState({
+    //         squares: squares,
+    //         xIsNext: !this.state.xIsNext,
+    //     });
+    // }
 
     renderSquare(i) {
         // return <Square value={i}/>;
