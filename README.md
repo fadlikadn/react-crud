@@ -1,3 +1,8 @@
+## Project Description
+
+This experimental project is created by following tutorial in
+https://reactjs.org/tutorial/tutorial.html#adding-time-travel
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
