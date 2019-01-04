@@ -2,6 +2,31 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
+const HOC = (InnerComponent) => class extends React.Component {
+    constructor() {
+        super();
+        this.state = {count: 0}
+    }
+
+    update() {
+        this.setState({count: this.state.count + 1})
+    }
+    
+    componentWillMount() {
+        console.log('will mount')
+    }
+    
+    render() {
+        return (
+            <InnerComponent
+                {...this.props}
+                {...this.state}
+                update={this.update.bind(this)}
+            />
+        )
+    }
+}
+
 class App extends Component {
 
     constructor() {
@@ -49,12 +74,12 @@ class App extends Component {
     componentDidMount() {
         console.log('componentDidMount');
         console.log(ReactDOM.findDOMNode(this));
-        this.inc = setInterval(this.tick, 1000);
+        // this.inc = setInterval(this.tick, 1000);
     }
 
     componentWillUnmount() {
         console.log('componentWillUnmount');
-        clearInterval(this.inc);
+        // clearInterval(this.inc);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -66,6 +91,7 @@ class App extends Component {
     }
 
     filter(e) {
+        // console.log(e.target.value);
         this.setState({filter: e.target.value});
     }
 
@@ -91,53 +117,58 @@ class App extends Component {
         console.log('render');
         return (
             <div>
-            <div>
-                <Button>I <Heart /> React</Button>
-                <Title text="123456" />
-                <h1>{this.state.txt}</h1>
-                <input type="text" onChange={this.update.bind(this)} />
-                <textarea 
-                    onKeyPress={this.update} 
-                    onCopy={this.update} 
-                    onCut={this.update}
-                    onPaste={this.update} 
-                    onFocus={this.update} 
-                    onBlur={this.update} 
-                    onDoubleClick={this.update} 
-                    onTouchStart={this.update} 
-                    onTouchMove={this.update} 
-                    onTouchEnd={this.update} 
-                    
-                    cols="30" rows="10"/>
-                <h1>{this.state.currentEvent}</h1>
+                <div>
+                    <Button>button</Button>
+                    <hr/>
+                    <LabelHOC>label</LabelHOC>
+                </div>
+                <div>
+                    <Button>I <Heart /> React</Button>
+                    <Title text="123456" />
+                    <h1>{this.state.txt}</h1>
+                    <input type="text" onChange={this.update.bind(this)} />
+                    <textarea 
+                        onKeyPress={this.update} 
+                        onCopy={this.update} 
+                        onCut={this.update}
+                        onPaste={this.update} 
+                        onFocus={this.update} 
+                        onBlur={this.update} 
+                        onDoubleClick={this.update} 
+                        onTouchStart={this.update} 
+                        onTouchMove={this.update} 
+                        onTouchEnd={this.update} 
+                        
+                        cols="30" rows="10"/>
+                    <h1>{this.state.currentEvent}</h1>
 
-                <Input
-                    ref={ component => this.a = component }
-                    update={this.update.bind(this)}
-                /> {this.state.a}
-                <hr/>
-                <input
-                    ref="b"
-                    type="text"
-                    onChange={this.update.bind(this)}
-                /> {this.state.b}
-                <br/>
-                <hr/>
-                <button onClick={this.update}>{this.state.val}</button>
-                <button onClick={this.update}>{this.state.val * this.state.m}</button>
-                <br/><br/><hr/>
-                <button onClick={this.update.bind(this)}>
-                    {this.props.val}
-                </button>
-            </div>
+                    <Input
+                        ref={ component => this.a = component }
+                        update={this.update.bind(this)}
+                    /> {this.state.a}
+                    <hr/>
+                    <input
+                        ref="b"
+                        type="text"
+                        onChange={this.update.bind(this)}
+                    /> {this.state.b}
+                    <br/>
+                    <hr/>
+                    <button onClick={this.update}>{this.state.val}</button>
+                    <button onClick={this.update}>{this.state.val * this.state.m}</button>
+                    <br/><br/><hr/>
+                    <button onClick={this.update.bind(this)}>
+                        {this.props.val}
+                    </button>
+                </div>
 
-            <div>
-                <input type="text" onChange={this.filter.bind(this)} />
-                {items.map(item => 
-                    // <h4 key={item.name}>{item.name}</h4>
-                    <Person key={item.name} person={item} />
-                )}
-            </div>
+                <div>
+                    <input type="text" onChange={this.filter.bind(this)} />
+                    {items.map(item => 
+                        // <h4 key={item.name}>{item.name}</h4>
+                        <Person key={item.name} person={item} />
+                    )}
+                </div>
             </div>
         ) 
     }
@@ -162,7 +193,22 @@ App.defaultProps = {
 const Widget = (props) =>
     <input type="text" onChange={props.update.bind(this)} />
 
-const Button = (props) => <button>{props.children}</button>
+const Button = HOC((props) => 
+    <button onClick={props.update}>{props.children} - {props.count}</button>
+)
+
+class Label extends React.Component {
+    componentWillMount() {
+        console.log('label will mount')
+    }
+    render() {
+        return (
+            <label onMouseMove={this.props.update}>{this.props.children} - {this.props.count}</label>
+        )
+    }
+}
+
+const LabelHOC = HOC(Label)
 
 class Heart extends Component {
     render() {
