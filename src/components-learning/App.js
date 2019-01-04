@@ -12,7 +12,8 @@ class App extends Component {
             currentEvent: '---',
             a: '',
             val: 0,
-            increasing: false
+            increasing: false,
+            items: [],
         }
         this.update = this.update.bind(this);
     }
@@ -39,6 +40,10 @@ class App extends Component {
     componentWillMount() {
         console.log('componentWillMount');
         this.setState({ m: 2 });
+
+        fetch('https://swapi.co/api/people/?format=json')
+            .then(response => response.json())
+            .then( ({results: items}) => this.setState({items}));
     }
 
     componentDidMount() {
@@ -60,6 +65,10 @@ class App extends Component {
         return nextProps.val % 5 == 0;
     }
 
+    filter(e) {
+        this.setState({filter: e.target.value});
+    }
+
     render() {
         // let txt = this.props.txt;
         // return (
@@ -71,9 +80,17 @@ class App extends Component {
         //         <Widget update={this.update.bind(this)} />
         //     </div>
         // ) 
+        let items = this.state.items;
+        if (this.state.filter) {
+            items = items.filter(item =>
+                item.name.toLowerCase()
+                .includes(this.state.filter.toLowerCase()))
+        }
+
         console.log(this.state.increasing);
         console.log('render');
         return (
+            <div>
             <div>
                 <Button>I <Heart /> React</Button>
                 <Title text="123456" />
@@ -113,6 +130,15 @@ class App extends Component {
                     {this.props.val}
                 </button>
             </div>
+
+            <div>
+                <input type="text" onChange={this.filter.bind(this)} />
+                {items.map(item => 
+                    // <h4 key={item.name}>{item.name}</h4>
+                    <Person key={item.name} person={item} />
+                )}
+            </div>
+            </div>
         ) 
     }
 
@@ -120,6 +146,8 @@ class App extends Component {
         console.log(`prevProps: ${prevProps.val}`);
     }
 }
+
+const Person = (props) => <h4>{props.person.name}</h4>
 
 App.propTypes = {
     txt: PropTypes.string,
