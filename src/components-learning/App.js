@@ -11,6 +11,7 @@ class App extends Component {
             cat: 0,
             currentEvent: '---',
             a: '',
+            val: 0,
         }
         this.update = this.update.bind(this);
     }
@@ -22,7 +23,20 @@ class App extends Component {
             // a: ReactDOM.findDOMNode(this.a).value,
             a: this.a.refs.input.value,
             b: this.refs.b.value,
+            val: this.state.val + 1
         })
+    }
+
+    componentWillMount() {
+        console.log('componentWillMount');
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount');
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
     }
 
     render() {
@@ -36,7 +50,7 @@ class App extends Component {
         //         <Widget update={this.update.bind(this)} />
         //     </div>
         // ) 
-
+        console.log('render');
         return (
             <div>
                 <Button>I <Heart /> React</Button>
@@ -68,6 +82,9 @@ class App extends Component {
                     type="text"
                     onChange={this.update.bind(this)}
                 /> {this.state.b}
+                <br/>
+                <hr/>
+                <button onClick={this.update}>{this.state.val}</button>
             </div>
         ) 
     }
@@ -112,4 +129,24 @@ class Input extends Component {
     }
 }
 
-export default App;
+class Wrapper extends Component {
+    mount() {
+        ReactDOM.render(<App cat={10} />, document.getElementById('a'))
+    }
+
+    unmount() {
+        ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+    }
+
+    render() {
+        return (
+            <div>
+                <button onClick={this.mount.bind(this)}>Mount</button>
+                <button onClick={this.unmount.bind(this)}>UnMount</button>
+                <div id="a"></div>
+            </div>
+        )
+    }
+}
+
+export default Wrapper;
