@@ -12,6 +12,7 @@ class App extends Component {
             currentEvent: '---',
             a: '',
             val: 0,
+            increasing: false
         }
         this.update = this.update.bind(this);
     }
@@ -24,7 +25,11 @@ class App extends Component {
             a: this.a.refs.input.value,
             b: this.refs.b.value,
             val: this.state.val + 1
-        })
+        });
+        ReactDOM.render(
+            <App cat={10} val={this.props.val + 1} />,
+            document.getElementById('root')
+        )
     }
 
     tick() {
@@ -47,6 +52,14 @@ class App extends Component {
         clearInterval(this.inc);
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({increasing: nextProps.val > this.props.val})
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.val % 5 == 0;
+    }
+
     render() {
         // let txt = this.props.txt;
         // return (
@@ -58,6 +71,7 @@ class App extends Component {
         //         <Widget update={this.update.bind(this)} />
         //     </div>
         // ) 
+        console.log(this.state.increasing);
         console.log('render');
         return (
             <div>
@@ -94,8 +108,16 @@ class App extends Component {
                 <hr/>
                 <button onClick={this.update}>{this.state.val}</button>
                 <button onClick={this.update}>{this.state.val * this.state.m}</button>
+                <br/><br/><hr/>
+                <button onClick={this.update.bind(this)}>
+                    {this.props.val}
+                </button>
             </div>
         ) 
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log(`prevProps: ${prevProps.val}`);
     }
 }
 
@@ -106,6 +128,7 @@ App.propTypes = {
 
 App.defaultProps = {
     txt: "this is the default text",
+    val: 0
 }
 
 const Widget = (props) =>
@@ -158,4 +181,4 @@ class Wrapper extends Component {
     }
 }
 
-export default Wrapper;
+export default App;
