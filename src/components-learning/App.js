@@ -7,12 +7,17 @@ class App extends Component {
         super();
         this.state = {
             txt: 'this is the state text',
-            cat: 0
+            cat: 0,
+            currentEvent: '---'
         }
+        this.update = this.update.bind(this);
     }
 
     update(e) {
-        this.setState({txt: e.target.value})
+        this.setState({
+            txt: e.target.value,
+            currentEvent: e.type,
+        })
     }
 
     render() {
@@ -31,6 +36,22 @@ class App extends Component {
             <div>
                 <Button>I <Heart /> React</Button>
                 <Title text="123456" />
+                <h1>{this.state.txt}</h1>
+                <input type="text" onChange={this.update.bind(this)} />
+                <textarea 
+                    onKeyPress={this.update} 
+                    onCopy={this.update} 
+                    onCut={this.update}
+                    onPaste={this.update} 
+                    onFocus={this.update} 
+                    onBlur={this.update} 
+                    onDoubleClick={this.update} 
+                    onTouchStart={this.update} 
+                    onTouchMove={this.update} 
+                    onTouchEnd={this.update} 
+                    
+                    cols="30" rows="10"/>
+                <h1>{this.state.currentEvent}</h1>
             </div>
         ) 
     }
