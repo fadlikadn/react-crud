@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 class App extends Component {
@@ -8,7 +9,8 @@ class App extends Component {
         this.state = {
             txt: 'this is the state text',
             cat: 0,
-            currentEvent: '---'
+            currentEvent: '---',
+            a: '',
         }
         this.update = this.update.bind(this);
     }
@@ -17,6 +19,9 @@ class App extends Component {
         this.setState({
             txt: e.target.value,
             currentEvent: e.type,
+            // a: ReactDOM.findDOMNode(this.a).value,
+            a: this.a.refs.input.value,
+            b: this.refs.b.value,
         })
     }
 
@@ -52,6 +57,17 @@ class App extends Component {
                     
                     cols="30" rows="10"/>
                 <h1>{this.state.currentEvent}</h1>
+
+                <Input
+                    ref={ component => this.a = component }
+                    update={this.update.bind(this)}
+                /> {this.state.a}
+                <hr/>
+                <input
+                    ref="b"
+                    type="text"
+                    onChange={this.update.bind(this)}
+                /> {this.state.b}
             </div>
         ) 
     }
@@ -87,6 +103,12 @@ Title.propTypes = {
         if(props[propName].length < 6) {
             return new Error(`${propName} was too short`)
         }
+    }
+}
+
+class Input extends Component {
+    render() {
+        return <div><input ref="input" type="text" onChange={this.props.update}/></div>
     }
 }
 

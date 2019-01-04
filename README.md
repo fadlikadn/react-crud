@@ -1,7 +1,7 @@
 ## Project Description
 
 This experimental project is created by following tutorial in
-https://reactjs.org/tutorial/tutorial.html#adding-time-travel
+https://egghead.io/courses/start-learning-react
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
