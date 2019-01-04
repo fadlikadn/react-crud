@@ -27,16 +27,24 @@ class App extends Component {
         })
     }
 
+    tick() {
+        console.log('tick');
+    }
+
     componentWillMount() {
         console.log('componentWillMount');
+        this.setState({ m: 2 });
     }
 
     componentDidMount() {
         console.log('componentDidMount');
+        console.log(ReactDOM.findDOMNode(this));
+        this.inc = setInterval(this.tick, 1000);
     }
 
     componentWillUnmount() {
         console.log('componentWillUnmount');
+        clearInterval(this.inc);
     }
 
     render() {
@@ -85,6 +93,7 @@ class App extends Component {
                 <br/>
                 <hr/>
                 <button onClick={this.update}>{this.state.val}</button>
+                <button onClick={this.update}>{this.state.val * this.state.m}</button>
             </div>
         ) 
     }
